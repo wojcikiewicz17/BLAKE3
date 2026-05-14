@@ -426,3 +426,17 @@ Os artefatos de benchmark agora registram perfil e flags finais efetivas para au
 - Não há dependências externas adicionais; o módulo usa apenas C/POSIX e infraestrutura já existente no repositório.
 - Auditoria estática dedicada: `rmr/tools/audit_pathcutter_static.py` valida includes proibidos, heap em loops quentes e uso indevido de símbolos fora do contrato do módulo.
 - Classificação de autoria: trilha explicitamente marcada como **código autoral externo ao upstream BLAKE3**.
+
+### 12) Reprodutor local do job `cmake_c_tests`
+
+Para validar o diretório `c/` com CMake e comparar com a matriz declarada em
+`.github/workflows/ci.yml`, foi adicionado o helper `tools/cmake_ci_compare.sh`.
+
+- Execução rápida (início): `tools/cmake_ci_compare.sh`
+  - roda a trilha mínima (`SIMD=x86-intrinsics`, `TBB=OFF`) com as mesmas flags
+    de fallback de SIMD usadas no CI.
+- Execução completa: `tools/cmake_ci_compare.sh --full`
+  - percorre toda a matriz de `SIMD` e `TBB` do job `cmake_c_tests`.
+
+Esse fluxo não altera o núcleo criptográfico; apenas automatiza validação e
+comparação estrutural com a fonte de verdade do CI.

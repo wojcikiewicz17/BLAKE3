@@ -46,6 +46,12 @@
 
 #define MAYBE_UNUSED(x) (void)((x))
 
+#if defined(__GNUC__) || defined(__clang__)
+#define BLAKE3_LIKELY(x) __builtin_expect(!!(x), 1)
+#else
+#define BLAKE3_LIKELY(x) (x)
+#endif
+
 #if defined(IS_X86)
 static uint64_t xgetbv(void) {
 #if defined(_MSC_VER)
